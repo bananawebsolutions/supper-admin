@@ -90,7 +90,7 @@ export default function Orders() {
                                     className="text-xs bg-red-100 dark:bg-red-600 border-red-200 dark:border-red-500 border-[1px]"
                                     variant="outline"
                                 >
-                                    Declined
+                                    Declinado
                                 </Badge>
                             </TableCell>
                             <TableCell className="hidden md:table-cell">
