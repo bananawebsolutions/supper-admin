@@ -1,3 +1,6 @@
+// TODO: Do not make all this client, find the way to do it better. Or else, leave it there.
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import {
     Card,
@@ -14,8 +17,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import usePaymentsData from "@/hooks/usePaymentsData";
+import Stripe from "stripe";
 
 export default function Orders() {
+    const { data: payments, loading, error } = usePaymentsData();
+
+    if (loading) {
+        return <p>Cargando...</p>;
+    }
+    if (error) {
+        return <p className="text-red-500">Error: {error}</p>;
+    }
+
     return (
         <Card>
             <CardHeader className="px-7">
@@ -75,6 +89,32 @@ export default function Orders() {
                                 yaskU293k
                             </TableCell>
                         </TableRow>
+                        {payments.map((payment: Stripe.Checkout.Session) => (
+                            <TableRow key={payment.id}>
+                                <TableCell>
+                                    <div className="text-sm md:inline">
+                                        {payment.metadata["email"]}
+                                    </div>
+                                </TableCell>
+                                <TableCell className="hidden sm:table-cell">
+                                    {payment.metadata["shippingMethod"]}
+                                </TableCell>
+                                <TableCell className="hidden sm:table-cell">
+                                    <Badge
+                                        className="text-xs bg-green-100 dark:bg-green-600 dark:border-green-500 border-[1px] border-green-200"
+                                        variant="secondary"
+                                    >
+                                        {payment.payment_status}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell className="hidden md:table-cell">
+                                    {" "}
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    {payment.amount_total / 100}
+                                </TableCell>
+                            </TableRow>
+                        ))}
                         <TableRow>
                             <TableCell>
                                 {/* <div className="font-medium">Olivia Smith</div> */}
