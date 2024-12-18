@@ -40,30 +40,30 @@ export default function Orders() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Cliente</TableHead>
-                            <TableHead className="hidden sm:table-cell">
-                                Método de Envío
-                            </TableHead>
-                            <TableHead className="hidden sm:table-cell">
-                                Status
-                            </TableHead>
-                            <TableHead className="hidden md:table-cell">
-                                Fecha
-                            </TableHead>
-                            <TableHead className="text-right">
-                                Importe
-                            </TableHead>
-                            <TableHead className="text-right hidden md:table-cell">
-                                Id Pedido
-                            </TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {payments.length > 0 ? (
-                            payments?.map(
+                {payments?.length > 0 ? (
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Cliente</TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Método de Envío
+                                </TableHead>
+                                <TableHead className="hidden sm:table-cell">
+                                    Status
+                                </TableHead>
+                                <TableHead className="hidden md:table-cell">
+                                    Fecha
+                                </TableHead>
+                                <TableHead className="text-right">
+                                    Importe
+                                </TableHead>
+                                <TableHead className="text-right hidden md:table-cell">
+                                    Id Pedido
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {payments?.map(
                                 (payment: Stripe.Checkout.Session) => (
                                     <TableRow key={payment.id}>
                                         <TableCell>
@@ -105,12 +105,12 @@ export default function Orders() {
                                         </TableCell>
                                     </TableRow>
                                 )
-                            )
-                        ) : (
-                            <p>Aún no hay pedidos realizados.</p>
-                        )}
-                    </TableBody>
-                </Table>
+                            )}
+                        </TableBody>
+                    </Table>
+                ) : (
+                    <p className="text-sm pl-2">Aún no tienes pedidos.</p>
+                )}
             </CardContent>
         </Card>
     );
