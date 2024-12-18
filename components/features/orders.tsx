@@ -62,41 +62,53 @@ export default function Orders() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {payments?.map((payment: Stripe.Checkout.Session) => (
-                            <TableRow key={payment.id}>
-                                <TableCell>
-                                    <div className="text-sm md:inline">
-                                        {payment.metadata["email"]}
-                                    </div>
-                                </TableCell>
-                                <TableCell className="hidden sm:table-cell">
-                                    {payment.metadata["shippingMethod"]}
-                                </TableCell>
-                                <TableCell className="hidden sm:table-cell">
-                                    <Badge
-                                        className={`text-xs ${
-                                            payment.payment_status === "paid"
-                                                ? "bg-green-100 dark:bg-green-600 dark:border-green-500 border-green-200 hover:bg-green-100 hover:dark:bg-green-700"
-                                                : "bg-red-100 dark:bg-red-600 border-red-200 dark:border-red-500 hover:bg-red-100 hover:dark:bg-red-700"
-                                        } border-[1px] border-green-200`}
-                                        variant="secondary"
-                                    >
-                                        {payment.payment_status}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                    {payment.metadata["date"]}
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    <FormattedPrice
-                                        amount={payment.amount_total / 100}
-                                    />
-                                </TableCell>
-                                <TableCell className="text-right hidden md:table-cell">
-                                    {payment.id.slice(-10)}
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {payments.length > 0 ? (
+                            payments?.map(
+                                (payment: Stripe.Checkout.Session) => (
+                                    <TableRow key={payment.id}>
+                                        <TableCell>
+                                            <div className="text-sm md:inline">
+                                                {payment.metadata?.email}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="hidden sm:table-cell">
+                                            {payment.metadata?.shippingMethod}
+                                        </TableCell>
+                                        <TableCell className="hidden sm:table-cell">
+                                            <Badge
+                                                className={`text-xs ${
+                                                    payment.payment_status ===
+                                                    "paid"
+                                                        ? "bg-green-100 dark:bg-green-600 dark:border-green-500 border-green-200 hover:bg-green-100 hover:dark:bg-green-600"
+                                                        : "bg-red-100 dark:bg-red-600 border-red-200 dark:border-red-500 hover:bg-red-100 hover:dark:bg-red-600"
+                                                } border-[1px] border-green-200`}
+                                                variant="secondary"
+                                            >
+                                                {payment.payment_status}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="hidden md:table-cell">
+                                            {payment.metadata?.date}
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                            <FormattedPrice
+                                                amount={
+                                                    payment?.amount_total
+                                                        ? payment.amount_total /
+                                                          100
+                                                        : 0
+                                                }
+                                            />
+                                        </TableCell>
+                                        <TableCell className="text-right hidden md:table-cell">
+                                            {payment.id.slice(-10)}
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            )
+                        ) : (
+                            <p>Aún no hay pedidos realizados.</p>
+                        )}
                     </TableBody>
                 </Table>
             </CardContent>
