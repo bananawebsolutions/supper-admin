@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/table";
 import usePaymentsData from "@/hooks/usePaymentsData";
 import Stripe from "stripe";
+import FormattedPrice from "../formatted-price";
 
 export default function Orders() {
     const { data: payments, loading, error } = usePaymentsData();
@@ -56,40 +57,12 @@ export default function Orders() {
                                 Importe
                             </TableHead>
                             <TableHead className="text-right hidden md:table-cell">
-                                No. de Pedido
+                                Id Pedido
                             </TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow>
-                            <TableCell>
-                                {/* <div className="font-medium">Liam Johnson</div> */}
-                                <div className="text-sm md:inline">
-                                    liam@example.com
-                                </div>
-                            </TableCell>
-                            <TableCell className="hidden sm:table-cell">
-                                Pick & Go
-                            </TableCell>
-                            <TableCell className="hidden sm:table-cell">
-                                <Badge
-                                    className="text-xs bg-green-100 dark:bg-green-600 dark:border-green-500 border-[1px] border-green-200"
-                                    variant="secondary"
-                                >
-                                    Pagado
-                                </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell">
-                                2023-06-23
-                            </TableCell>
-                            <TableCell className="text-right">
-                                $250.00
-                            </TableCell>
-                            <TableCell className="text-right hidden md:table-cell">
-                                yaskU293k
-                            </TableCell>
-                        </TableRow>
-                        {payments.map((payment: Stripe.Checkout.Session) => (
+                        {payments?.map((payment: Stripe.Checkout.Session) => (
                             <TableRow key={payment.id}>
                                 <TableCell>
                                     <div className="text-sm md:inline">
@@ -101,76 +74,29 @@ export default function Orders() {
                                 </TableCell>
                                 <TableCell className="hidden sm:table-cell">
                                     <Badge
-                                        className="text-xs bg-green-100 dark:bg-green-600 dark:border-green-500 border-[1px] border-green-200"
+                                        className={`text-xs ${
+                                            payment.payment_status === "paid"
+                                                ? "bg-green-100 dark:bg-green-600 dark:border-green-500 border-green-200 hover:bg-green-100 hover:dark:bg-green-700"
+                                                : "bg-red-100 dark:bg-red-600 border-red-200 dark:border-red-500 hover:bg-red-100 hover:dark:bg-red-700"
+                                        } border-[1px] border-green-200`}
                                         variant="secondary"
                                     >
                                         {payment.payment_status}
                                     </Badge>
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                    {" "}
+                                    {payment.metadata["date"]}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                    {payment.amount_total / 100}
+                                    <FormattedPrice
+                                        amount={payment.amount_total / 100}
+                                    />
+                                </TableCell>
+                                <TableCell className="text-right hidden md:table-cell">
+                                    {payment.id.slice(-10)}
                                 </TableCell>
                             </TableRow>
                         ))}
-                        <TableRow>
-                            <TableCell>
-                                {/* <div className="font-medium">Olivia Smith</div> */}
-                                <div className="text-sm md:inline">
-                                    olivia@example.com
-                                </div>
-                            </TableCell>
-                            <TableCell className="hidden sm:table-cell">
-                                Domicilio
-                            </TableCell>
-                            <TableCell className="hidden sm:table-cell">
-                                <Badge
-                                    className="text-xs bg-red-100 dark:bg-red-600 border-red-200 dark:border-red-500 border-[1px]"
-                                    variant="outline"
-                                >
-                                    Declinado
-                                </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell">
-                                2023-06-24
-                            </TableCell>
-                            <TableCell className="text-right">
-                                $150.00
-                            </TableCell>
-                            <TableCell className="text-right hidden md:table-cell">
-                                yaskU293k
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>
-                                {/* <div className="font-medium">Noah Williams</div> */}
-                                <div className="text-sm md:inline">
-                                    noah@example.com
-                                </div>
-                            </TableCell>
-                            <TableCell className="hidden sm:table-cell">
-                                Pick & Go
-                            </TableCell>
-                            <TableCell className="hidden sm:table-cell">
-                                <Badge
-                                    className="text-xs bg-green-100 dark:bg-green-600 dark:border-green-500 border-[1px] border-green-200"
-                                    variant="secondary"
-                                >
-                                    Pagado
-                                </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell">
-                                2023-06-25
-                            </TableCell>
-                            <TableCell className="text-right">
-                                $350.00
-                            </TableCell>
-                            <TableCell className="text-right hidden md:table-cell">
-                                yaskU293k
-                            </TableCell>
-                        </TableRow>
                     </TableBody>
                 </Table>
             </CardContent>
