@@ -1,3 +1,9 @@
+import Clients from "@/components/clients";
+
 export default function ClientsPage() {
-    return <div>Clients</div>;
+    return (
+        <div>
+            <Clients />
+        </div>
+    );
 }

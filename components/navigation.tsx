@@ -3,12 +3,16 @@
 import { Home, ShoppingCart, Users } from "lucide-react";
 import Link from "next/link";
 // import { Badge } from "./ui/badge";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Navigation() {
-    const url = window.location.href;
-    const parts = url.split("/");
-    const [active, setActive] = useState<string>(parts[parts.length - 1]);
+    const [active, setActive] = useState<string>("");
+
+    useEffect(() => {
+        const url = window.location.href;
+        const parts = url.split("/");
+        setActive(parts[parts.length - 1]);
+    }, []);
 
     return (
         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
