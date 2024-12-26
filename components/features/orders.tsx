@@ -20,6 +20,7 @@ import {
 import usePaymentsData from "@/hooks/usePaymentsData";
 import Stripe from "stripe";
 import FormattedPrice from "../formatted-price";
+import Link from "next/link";
 
 export default function Orders() {
     const { data: payments, loading, error } = usePaymentsData();
@@ -60,6 +61,7 @@ export default function Orders() {
                                 <TableHead className="text-right hidden md:table-cell">
                                     Id Pedido
                                 </TableHead>
+                                <TableHead>Detalles del Pedido</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -102,6 +104,14 @@ export default function Orders() {
                                         </TableCell>
                                         <TableCell className="text-right hidden md:table-cell">
                                             {payment.id.slice(-10)}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Link
+                                                href={`/pedidos/${payment.id}`}
+                                                className="text-sm md:inline text-muted-foreground"
+                                            >
+                                                Ver Detalles
+                                            </Link>
                                         </TableCell>
                                     </TableRow>
                                 )

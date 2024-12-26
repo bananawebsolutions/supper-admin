@@ -16,6 +16,10 @@ function Navigation() {
         if (parts[parts.length - 1] === "") {
             setActive("dashboard");
         }
+
+        if (parts.length > 4) {
+            setActive("pedidos");
+        }
     }, []);
 
     return (
