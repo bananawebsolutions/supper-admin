@@ -1,10 +1,10 @@
 import Link from "next/link";
 import {
-    Bell,
+    // Bell,
     CircleUser,
     Home,
     Menu,
-    Package2,
+    // Package2,
     ShoppingCart,
     Users,
 } from "lucide-react";
@@ -23,21 +23,26 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import AdminSearch from "@/components/features/admin-search";
 import Navigation from "./navigation";
+import Image from "next/image";
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
     return (
         <>
             <div className="hidden border-r bg-muted/40 md:block">
                 <div className="flex h-full max-h-screen flex-col gap-2">
-                    <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+                    <div className="flex items-center border-b px-4 h-[80px] lg:px-6">
                         <Link
                             href="/"
                             className="flex items-center gap-2 font-semibold"
                         >
-                            <Package2 className="h-6 w-6" />
-                            <span>Supper</span>
+                            <Image
+                                src="/logo-supper.webp"
+                                alt="Logo Supper"
+                                width={120}
+                                height={120}
+                            />
                         </Link>
-                        <Button
+                        {/* <Button
                             variant="outline"
                             size="icon"
                             className="ml-auto h-8 w-8"
@@ -46,7 +51,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                             <span className="sr-only">
                                 Toggle notifications
                             </span>
-                        </Button>
+                        </Button> */}
                     </div>
                     <div className="flex-1">
                         <Navigation />
@@ -54,7 +59,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                 </div>
             </div>
             <div className="flex flex-col">
-                <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+                <header className="flex items-center gap-4 border-b bg-muted/40 px-4 h-[80px] lg:px-6">
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button
@@ -74,8 +79,12 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                                     href="#"
                                     className="flex items-center gap-2 text-lg font-semibold"
                                 >
-                                    <Package2 className="h-6 w-6" />
-                                    <span className="sr-only">Supper</span>
+                                    <Image
+                                        src={"/logo-supper.webp"}
+                                        alt="Logo Supper"
+                                        width={120}
+                                        height={120}
+                                    />
                                 </Link>
                                 <Link
                                     href="/"
