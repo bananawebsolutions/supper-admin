@@ -12,6 +12,10 @@ function Navigation() {
         const url = window.location.href;
         const parts = url.split("/");
         setActive(parts[parts.length - 1]);
+
+        if (parts[parts.length - 1] === "") {
+            setActive("dashboard");
+        }
     }, []);
 
     return (
