@@ -107,7 +107,7 @@ export default function Orders() {
                                         </TableCell>
                                         <TableCell>
                                             <Link
-                                                href={`/pedidos/${payment.id}`}
+                                                href={`/pedidos/detallesOrden?orderId=${payment.id}&email=${payment?.metadata?.email}`}
                                                 className="text-sm md:inline text-muted-foreground"
                                             >
                                                 Ver Detalles
