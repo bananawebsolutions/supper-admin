@@ -17,19 +17,13 @@ export const getOrderData = async ({ orderId, email }: Props) => {
 
         const orderDoc = await ordersRef.get();
 
-        if (!orderDoc.exists) {
-            return null;
-        }
-
         const result = {
             id: orderDoc.id,
             value: orderDoc.data()?.items,
             ...orderDoc.data(),
         };
 
-        console.log(result.value);
-
-        return result.id;
+        return result.value;
     } catch (error) {
         console.error("Error getting usersInfo data:", error);
         return null;

@@ -16,7 +16,16 @@ function OrderDetails({ orderId, email }: Props) {
         return <p className="text-red-500">Error: {error}</p>;
     }
 
-    return <div>OrderDetails {order}</div>;
+    return (
+        <div>
+            OrderDetails
+            <div>
+                {order?.items?.map((item) => (
+                    <div key={item._id}>{item.title}</div>
+                ))}
+            </div>
+        </div>
+    );
 }
 
 export default OrderDetails;
