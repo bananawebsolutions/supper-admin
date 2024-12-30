@@ -9,11 +9,15 @@ function OrderDetailsPage() {
     const orderId = params.get("orderId");
     const email = params.get("email");
 
-    // TODO: Make the case that if the id does not match show a 404
-
     return (
         <div>
-            <OrderDetails orderId={orderId} email={email} />
+            {orderId && email ? (
+                <OrderDetails orderId={orderId} email={email} />
+            ) : (
+                <p className="text-red-500">
+                    Error: No orderId or email provided
+                </p>
+            )}
         </div>
     );
 }
