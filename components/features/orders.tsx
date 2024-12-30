@@ -20,7 +20,7 @@ import {
 import usePaymentsData from "@/hooks/usePaymentsData";
 import Stripe from "stripe";
 import FormattedPrice from "../formatted-price";
-import Link from "next/link";
+import OrderDetails from "../order-details";
 
 export default function Orders() {
     const { data: payments, loading, error } = usePaymentsData();
@@ -106,12 +106,10 @@ export default function Orders() {
                                             {payment.id.slice(-10)}
                                         </TableCell>
                                         <TableCell>
-                                            <Link
-                                                href={`/pedidos/detallesOrden?orderId=${payment.id}&email=${payment?.metadata?.email}`}
-                                                className="text-sm md:inline text-muted-foreground"
-                                            >
-                                                Ver Detalles
-                                            </Link>
+                                            <OrderDetails
+                                                email={payment.metadata.email}
+                                                orderId={payment?.id}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 )

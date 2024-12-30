@@ -1,5 +1,5 @@
 import { useOrderData } from "@/hooks/useOrderData";
-import { Card, CardHeader, CardDescription, CardContent } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
 import {
     Table,
     TableBody,
@@ -8,6 +8,16 @@ import {
     TableHeader,
     TableRow,
 } from "./ui/table";
+import { useState } from "react";
+import {
+    Dialog,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "./ui/dialog";
+import { DialogContent } from "@radix-ui/react-dialog";
+import { Button } from "./ui/button";
 
 interface Props {
     orderId: string;
@@ -39,6 +49,8 @@ interface OrderData {
 }
 
 function OrderDetails({ orderId, email }: Props) {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
     const {
         data: order,
         error,
@@ -49,7 +61,7 @@ function OrderDetails({ orderId, email }: Props) {
         loading: boolean;
     };
 
-    if (loading) {
+    if (loading && isOpen) {
         return <div>Cargando...</div>;
     }
 
@@ -58,67 +70,110 @@ function OrderDetails({ orderId, email }: Props) {
     }
 
     return (
-        <Card>
-            <CardHeader className="px-7">
-                Detalles de la orden
-                <CardDescription>
-                    Detalles de la orden seleccionada
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                {order?.items ? (
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Orden Detallada</TableHead>
-                                <TableHead>Precio</TableHead>
-                                <TableHead>Cantidad</TableHead>
-                                <TableHead>Kg Maduro</TableHead>
-                                <TableHead>Kg Verde</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {order?.items?.map((item: ProductData) => (
-                                <TableRow key={item._id}>
-                                    <TableCell>{item.title}</TableCell>
-                                    <TableCell>{item.price}</TableCell>
-                                    {item?.quantity &&
-                                    item?.productType === "other" ? (
-                                        <TableCell>{item.quantity}</TableCell>
-                                    ) : (
-                                        <TableCell className="text-muted-foreground italic">
-                                            -
-                                        </TableCell>
-                                    )}
-                                    {item?.matureQuantity &&
-                                    item?.productType !== "other" ? (
-                                        <TableCell>
-                                            {item?.matureQuantity}
-                                        </TableCell>
-                                    ) : (
-                                        <TableCell className="text-muted-foreground italic">
-                                            -
-                                        </TableCell>
-                                    )}
-                                    {item?.greenQuantity &&
-                                    item?.productType !== "other" ? (
-                                        <TableCell>
-                                            {item.greenQuantity}
-                                        </TableCell>
-                                    ) : (
-                                        <TableCell className="text-muted-foreground italic">
-                                            -
-                                        </TableCell>
-                                    )}
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                ) : (
-                    <p>No se encontraron detalles de la orden</p>
-                )}
-            </CardContent>
-        </Card>
+        <div>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <DialogTrigger asChild className="text-muted text-sm">
+                    <Button
+                        variant="outline"
+                        className={`${isOpen ? "hidden" : "block"}`}
+                    >
+                        Ver detalles
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader className="mt-4 flex flex-row items-center justify-between">
+                        <div>
+                            <DialogTitle>Detalles del pedido</DialogTitle>
+                            <DialogDescription>
+                                Detalles del pedido seleccionado
+                            </DialogDescription>
+                        </div>
+                        <Button
+                            onClick={() => setIsOpen(false)}
+                            variant="outline"
+                        >
+                            Cerrar
+                        </Button>
+                    </DialogHeader>
+                    <Card className="mt-4 w-full">
+                        {/* <CardHeader className="px-7">
+                            Detalles de la orden
+                            <CardDescription>
+                                Detalles de la orden seleccionada
+                            </CardDescription>
+                        </CardHeader> */}
+                        <CardContent>
+                            {order?.items ? (
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>
+                                                Orden Detallada
+                                            </TableHead>
+                                            <TableHead>Precio</TableHead>
+                                            <TableHead>Cantidad</TableHead>
+                                            <TableHead>Kg Maduro</TableHead>
+                                            <TableHead>Kg Verde</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {order?.items?.map(
+                                            (item: ProductData) => (
+                                                <TableRow key={item._id}>
+                                                    <TableCell>
+                                                        {item.title}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {item.price}
+                                                    </TableCell>
+                                                    {item?.quantity &&
+                                                    item?.productType ===
+                                                        "other" ? (
+                                                        <TableCell>
+                                                            {item.quantity}
+                                                        </TableCell>
+                                                    ) : (
+                                                        <TableCell className="text-muted-foreground italic">
+                                                            -
+                                                        </TableCell>
+                                                    )}
+                                                    {item?.matureQuantity &&
+                                                    item?.productType !==
+                                                        "other" ? (
+                                                        <TableCell>
+                                                            {
+                                                                item?.matureQuantity
+                                                            }
+                                                        </TableCell>
+                                                    ) : (
+                                                        <TableCell className="text-muted-foreground italic">
+                                                            -
+                                                        </TableCell>
+                                                    )}
+                                                    {item?.greenQuantity &&
+                                                    item?.productType !==
+                                                        "other" ? (
+                                                        <TableCell>
+                                                            {item.greenQuantity}
+                                                        </TableCell>
+                                                    ) : (
+                                                        <TableCell className="text-muted-foreground italic">
+                                                            -
+                                                        </TableCell>
+                                                    )}
+                                                </TableRow>
+                                            )
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            ) : (
+                                <p>No se encontraron detalles de la orden</p>
+                            )}
+                        </CardContent>
+                    </Card>
+                </DialogContent>
+            </Dialog>
+        </div>
     );
 }
 
