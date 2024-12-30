@@ -1,4 +1,13 @@
 import { useOrderData } from "@/hooks/useOrderData";
+import { Card, CardHeader, CardDescription, CardContent } from "./ui/card";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "./ui/table";
 
 interface Props {
     orderId: string;
@@ -18,6 +27,8 @@ interface ProductData {
     productCategory: string;
     productType: string;
     quantity: number;
+    matureQuantity?: number;
+    greenQuantity?: number;
     slug: { current: string; _type: string };
 }
 
@@ -47,14 +58,67 @@ function OrderDetails({ orderId, email }: Props) {
     }
 
     return (
-        <div>
-            OrderDetails
-            <div>
-                {order?.items?.map((item: ProductData) => (
-                    <div key={item._id}>{item.title}</div>
-                ))}
-            </div>
-        </div>
+        <Card>
+            <CardHeader className="px-7">
+                Detalles de la orden
+                <CardDescription>
+                    Detalles de la orden seleccionada
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                {order?.items ? (
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Orden Detallada</TableHead>
+                                <TableHead>Precio</TableHead>
+                                <TableHead>Cantidad</TableHead>
+                                <TableHead>Kg Maduro</TableHead>
+                                <TableHead>Kg Verde</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {order?.items?.map((item: ProductData) => (
+                                <TableRow key={item._id}>
+                                    <TableCell>{item.title}</TableCell>
+                                    <TableCell>{item.price}</TableCell>
+                                    {item?.quantity &&
+                                    item?.productType === "other" ? (
+                                        <TableCell>{item.quantity}</TableCell>
+                                    ) : (
+                                        <TableCell className="text-muted-foreground italic">
+                                            -
+                                        </TableCell>
+                                    )}
+                                    {item?.matureQuantity &&
+                                    item?.productType !== "other" ? (
+                                        <TableCell>
+                                            {item?.matureQuantity}
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell className="text-muted-foreground italic">
+                                            -
+                                        </TableCell>
+                                    )}
+                                    {item?.greenQuantity &&
+                                    item?.productType !== "other" ? (
+                                        <TableCell>
+                                            {item.greenQuantity}
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell className="text-muted-foreground italic">
+                                            -
+                                        </TableCell>
+                                    )}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                ) : (
+                    <p>No se encontraron detalles de la orden</p>
+                )}
+            </CardContent>
+        </Card>
     );
 }
 
