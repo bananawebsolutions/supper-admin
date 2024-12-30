@@ -22,6 +22,8 @@ import { Button } from "./ui/button";
 interface Props {
     orderId: string;
     email: string;
+    pickupLocation: string;
+    shippingMethod: string;
 }
 
 interface ProductData {
@@ -48,7 +50,12 @@ interface OrderData {
     shipping: number;
 }
 
-function OrderDetails({ orderId, email }: Props) {
+function OrderDetails({
+    orderId,
+    email,
+    shippingMethod,
+    pickupLocation,
+}: Props) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const {
@@ -114,6 +121,9 @@ function OrderDetails({ orderId, email }: Props) {
                                             <TableHead>Cantidad</TableHead>
                                             <TableHead>Kg Maduro</TableHead>
                                             <TableHead>Kg Verde</TableHead>
+                                            <TableHead>
+                                                Lugar recolección pickup
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -155,6 +165,16 @@ function OrderDetails({ orderId, email }: Props) {
                                                         "other" ? (
                                                         <TableCell>
                                                             {item.greenQuantity}
+                                                        </TableCell>
+                                                    ) : (
+                                                        <TableCell className="text-muted-foreground italic">
+                                                            -
+                                                        </TableCell>
+                                                    )}
+                                                    {shippingMethod ===
+                                                    "pickup" ? (
+                                                        <TableCell>
+                                                            {pickupLocation}
                                                         </TableCell>
                                                     ) : (
                                                         <TableCell className="text-muted-foreground italic">

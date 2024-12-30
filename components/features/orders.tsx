@@ -107,8 +107,19 @@ export default function Orders() {
                                         </TableCell>
                                         <TableCell>
                                             <OrderDetails
-                                                email={payment.metadata.email}
+                                                email={
+                                                    payment?.metadata?.email ??
+                                                    ""
+                                                }
                                                 orderId={payment?.id}
+                                                shippingMethod={
+                                                    payment?.metadata
+                                                        ?.shippingMethod ?? ""
+                                                }
+                                                pickupLocation={
+                                                    payment?.metadata
+                                                        ?.pickupLocation ?? ""
+                                                }
                                             />
                                         </TableCell>
                                     </TableRow>
