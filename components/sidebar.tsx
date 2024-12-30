@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {
+    BoxIcon,
     // Bell,
     CircleUser,
     Home,
@@ -23,7 +24,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import AdminSearch from "@/components/features/admin-search";
 import Navigation from "./navigation";
-import Image from "next/image";
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
     return (
@@ -33,14 +33,12 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                     <div className="flex items-center border-b px-4 h-[80px] lg:px-6">
                         <Link
                             href="/"
-                            className="flex items-center gap-2 font-semibold"
+                            className="flex items-center gap-2 font-semibold text-lg"
                         >
-                            <Image
-                                src="/logo-supper.webp"
-                                alt="Logo Supper"
-                                width={120}
-                                height={120}
-                            />
+                            <span>
+                                <BoxIcon />
+                            </span>
+                            Supper
                         </Link>
                         {/* <Button
                             variant="outline"
@@ -79,12 +77,10 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                                     href="#"
                                     className="flex items-center gap-2 text-lg font-semibold"
                                 >
-                                    <Image
-                                        src={"/logo-supper.webp"}
-                                        alt="Logo Supper"
-                                        width={120}
-                                        height={120}
-                                    />
+                                    <span>
+                                        <BoxIcon />
+                                    </span>
+                                    Supper
                                 </Link>
                                 <Link
                                     href="/"
