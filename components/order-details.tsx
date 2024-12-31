@@ -77,7 +77,7 @@ function OrderDetails({
     }
 
     return (
-        <div>
+        <div className="flex justify-end">
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger asChild className="text-muted text-sm">
                     <Button

@@ -21,15 +21,21 @@ import usePaymentsData from "@/hooks/usePaymentsData";
 import Stripe from "stripe";
 import FormattedPrice from "../formatted-price";
 import OrderDetails from "../order-details";
+import useShippingData from "@/hooks/useShippingData";
 
 export default function Orders() {
     const { data: payments, loading, error } = usePaymentsData();
+    const {
+        data: shipping,
+        loading: shippingLoading,
+        error: shippingError,
+    } = useShippingData();
 
-    if (loading) {
+    if (loading || shippingLoading) {
         return <p>Cargando...</p>;
     }
-    if (error) {
-        return <p className="text-red-500">Error: {error}</p>;
+    if (error || shippingError) {
+        return <p className="text-red-500">Error: {error || shippingError}</p>;
     }
 
     return (
@@ -61,69 +67,128 @@ export default function Orders() {
                                 <TableHead className="text-right hidden md:table-cell">
                                     Id Pedido
                                 </TableHead>
-                                <TableHead>Detalles del Pedido</TableHead>
+                                <TableHead className="text-center">
+                                    Dirección
+                                </TableHead>
+                                <TableHead className="text-right">
+                                    Detalles del Pedido
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {payments?.map(
-                                (payment: Stripe.Checkout.Session) => (
-                                    <TableRow key={payment.id}>
-                                        <TableCell>
-                                            <div className="text-sm md:inline">
-                                                {payment.metadata?.email}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden sm:table-cell">
-                                            {payment.metadata?.shippingMethod}
-                                        </TableCell>
-                                        <TableCell className="hidden sm:table-cell">
-                                            <Badge
-                                                className={`text-xs ${
-                                                    payment.payment_status ===
-                                                    "paid"
-                                                        ? "bg-green-100 dark:bg-green-600 dark:border-green-500 border-green-200 hover:bg-green-100 hover:dark:bg-green-600"
-                                                        : "bg-red-100 dark:bg-red-600 border-red-200 dark:border-red-500 hover:bg-red-100 hover:dark:bg-red-600"
-                                                } border-[1px] border-green-200`}
-                                                variant="secondary"
-                                            >
-                                                {payment.payment_status}
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell">
-                                            {payment.metadata?.date}
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            <FormattedPrice
-                                                amount={
-                                                    payment?.amount_total
-                                                        ? payment.amount_total /
-                                                          100
-                                                        : 0
+                                (payment: Stripe.Checkout.Session) => {
+                                    const matchingShipping = shipping?.find(
+                                        (item: Stripe.PaymentIntent) =>
+                                            item.id === payment.payment_intent
+                                    ) as Stripe.PaymentIntent | undefined;
+
+                                    return (
+                                        <TableRow key={payment.id}>
+                                            <TableCell>
+                                                <div className="text-sm md:inline">
+                                                    {payment.metadata?.email}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="hidden sm:table-cell">
+                                                {
+                                                    payment.metadata
+                                                        ?.shippingMethod
                                                 }
-                                            />
-                                        </TableCell>
-                                        <TableCell className="text-right hidden md:table-cell">
-                                            {payment.id.slice(-10)}
-                                        </TableCell>
-                                        <TableCell>
-                                            <OrderDetails
-                                                email={
-                                                    payment?.metadata?.email ??
-                                                    ""
-                                                }
-                                                orderId={payment?.id}
-                                                shippingMethod={
-                                                    payment?.metadata
-                                                        ?.shippingMethod ?? ""
-                                                }
-                                                pickupLocation={
-                                                    payment?.metadata
-                                                        ?.pickupLocation ?? ""
-                                                }
-                                            />
-                                        </TableCell>
-                                    </TableRow>
-                                )
+                                            </TableCell>
+                                            <TableCell className="hidden sm:table-cell">
+                                                <Badge
+                                                    className={`text-xs ${
+                                                        payment.payment_status ===
+                                                        "paid"
+                                                            ? "bg-green-100 dark:bg-green-600 dark:border-green-500 border-green-200 hover:bg-green-100 hover:dark:bg-green-600"
+                                                            : "bg-red-100 dark:bg-red-600 border-red-200 dark:border-red-500 hover:bg-red-100 hover:dark:bg-red-600"
+                                                    } border-[1px] border-green-200`}
+                                                    variant="secondary"
+                                                >
+                                                    {payment.payment_status}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="hidden md:table-cell">
+                                                {payment.metadata?.date}
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                <FormattedPrice
+                                                    amount={
+                                                        payment?.amount_total
+                                                            ? payment.amount_total /
+                                                              100
+                                                            : 0
+                                                    }
+                                                />
+                                            </TableCell>
+                                            <TableCell className="text-right hidden md:table-cell">
+                                                {payment.id.slice(-10)}
+                                            </TableCell>
+                                            <TableCell className="text-center">
+                                                {matchingShipping?.shipping ? (
+                                                    <>
+                                                        {
+                                                            matchingShipping
+                                                                .shipping
+                                                                ?.address?.city
+                                                        }{" "}
+                                                        {
+                                                            matchingShipping
+                                                                .shipping
+                                                                ?.address
+                                                                ?.country
+                                                        }{" "}
+                                                        {
+                                                            matchingShipping
+                                                                .shipping
+                                                                ?.address?.state
+                                                        }{" "}
+                                                        {
+                                                            matchingShipping
+                                                                .shipping
+                                                                ?.address?.line1
+                                                        }{" "}
+                                                        {
+                                                            matchingShipping
+                                                                .shipping
+                                                                ?.address?.line2
+                                                        }{" "}
+                                                        {
+                                                            matchingShipping
+                                                                .shipping
+                                                                ?.address
+                                                                ?.postal_code
+                                                        }
+                                                    </>
+                                                ) : (
+                                                    <p className="text-sm text-muted-foreground italic">
+                                                        -
+                                                    </p>
+                                                )}
+                                            </TableCell>
+                                            <TableCell>
+                                                <OrderDetails
+                                                    email={
+                                                        payment?.metadata
+                                                            ?.email ?? ""
+                                                    }
+                                                    orderId={payment?.id}
+                                                    shippingMethod={
+                                                        payment?.metadata
+                                                            ?.shippingMethod ??
+                                                        ""
+                                                    }
+                                                    pickupLocation={
+                                                        payment?.metadata
+                                                            ?.pickupLocation ??
+                                                        ""
+                                                    }
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                }
                             )}
                         </TableBody>
                     </Table>
