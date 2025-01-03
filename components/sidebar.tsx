@@ -2,7 +2,7 @@ import Link from "next/link";
 import {
     BoxIcon,
     // Bell,
-    CircleUser,
+    // CircleUser,
     Home,
     Menu,
     // Package2,
@@ -12,18 +12,19 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//     DropdownMenu,
+//     DropdownMenuContent,
+//     DropdownMenuItem,
+//     DropdownMenuLabel,
+//     DropdownMenuSeparator,
+//     DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import AdminSearch from "@/components/features/admin-search";
 import Navigation from "./navigation";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
     return (
@@ -127,7 +128,10 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                         <AdminSearch />
                     </div>
                     <ModeToggle />
-                    <DropdownMenu>
+                    <SignedIn>
+                        <UserButton />
+                    </SignedIn>
+                    {/* <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
                                 variant="secondary"
@@ -139,16 +143,16 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                                     Toggle user menu
                                 </span>
                             </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                        </DropdownMenuTrigger> */}
+                    {/* <DropdownMenuContent align="end">
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>Settings</DropdownMenuItem>
                             <DropdownMenuItem>Support</DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>Logout</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                        </DropdownMenuContent> */}
+                    {/* </DropdownMenu> */}
                 </header>
                 <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
                     {children}

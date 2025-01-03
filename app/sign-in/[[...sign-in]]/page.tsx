@@ -1,11 +1,11 @@
-import { SignUp } from "@clerk/nextjs";
+import { SignIn } from "@clerk/nextjs";
 
-function SignUpPage() {
+function SignInPage() {
     return (
         <div className="flex items-center justify-center h-screen flex-col">
-            <SignUp />
+            <SignIn />
         </div>
     );
 }
 
-export default SignUpPage;
+export default SignInPage;
