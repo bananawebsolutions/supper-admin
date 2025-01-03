@@ -184,6 +184,10 @@ export default function Orders() {
                                                             ?.pickupLocation ??
                                                         ""
                                                     }
+                                                    schedule={
+                                                        payment?.metadata
+                                                            ?.schedule ?? ""
+                                                    }
                                                 />
                                             </TableCell>
                                         </TableRow>

@@ -24,6 +24,7 @@ interface Props {
     email: string;
     pickupLocation: string;
     shippingMethod: string;
+    schedule: string;
 }
 
 interface ProductData {
@@ -55,6 +56,7 @@ function OrderDetails({
     email,
     shippingMethod,
     pickupLocation,
+    schedule,
 }: Props) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -124,6 +126,9 @@ function OrderDetails({
                                             <TableHead>
                                                 Lugar recolección pickup
                                             </TableHead>
+                                            <TableHead>
+                                                Horario de entrega
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -175,6 +180,16 @@ function OrderDetails({
                                                     "pickup" ? (
                                                         <TableCell>
                                                             {pickupLocation}
+                                                        </TableCell>
+                                                    ) : (
+                                                        <TableCell className="text-muted-foreground italic">
+                                                            -
+                                                        </TableCell>
+                                                    )}
+                                                    {shippingMethod ===
+                                                    "domicilio" ? (
+                                                        <TableCell>
+                                                            {schedule}
                                                         </TableCell>
                                                     ) : (
                                                         <TableCell className="text-muted-foreground italic">
