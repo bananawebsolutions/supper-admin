@@ -31,11 +31,13 @@ interface ProductData {
     _createdAt: string;
     _rev: string;
     _id: string;
+    kgQuantity?: number;
     title: string;
     bestseller: boolean;
     brand: string;
     description: string;
-    price: number;
+    kgPrice: number;
+    pPrice: number;
     image: { _type: string; asset: { _ref: string; _type: string } };
     productCategory: string;
     productType: string;
@@ -123,6 +125,7 @@ function OrderDetails({
                                             <TableHead>Cantidad</TableHead>
                                             <TableHead>Kg Maduro</TableHead>
                                             <TableHead>Kg Verde</TableHead>
+                                            <TableHead>Kg</TableHead>
                                             <TableHead>
                                                 Lugar recolección pickup
                                             </TableHead>
@@ -139,11 +142,10 @@ function OrderDetails({
                                                         {item.title}
                                                     </TableCell>
                                                     <TableCell>
-                                                        {item.price}
+                                                        {item.kgPrice ||
+                                                            item.pPrice}
                                                     </TableCell>
-                                                    {item?.quantity &&
-                                                    item?.productType ===
-                                                        "other" ? (
+                                                    {item?.quantity ? (
                                                         <TableCell>
                                                             {item.quantity}
                                                         </TableCell>
@@ -152,9 +154,7 @@ function OrderDetails({
                                                             -
                                                         </TableCell>
                                                     )}
-                                                    {item?.matureQuantity &&
-                                                    item?.productType !==
-                                                        "other" ? (
+                                                    {item?.matureQuantity ? (
                                                         <TableCell>
                                                             {
                                                                 item?.matureQuantity
@@ -165,11 +165,18 @@ function OrderDetails({
                                                             -
                                                         </TableCell>
                                                     )}
-                                                    {item?.greenQuantity &&
-                                                    item?.productType !==
-                                                        "other" ? (
+                                                    {item?.greenQuantity ? (
                                                         <TableCell>
                                                             {item.greenQuantity}
+                                                        </TableCell>
+                                                    ) : (
+                                                        <TableCell className="text-muted-foreground italic">
+                                                            -
+                                                        </TableCell>
+                                                    )}
+                                                    {item?.kgQuantity ? (
+                                                        <TableCell className="text-muted-foreground italic">
+                                                            {item.kgQuantity}
                                                         </TableCell>
                                                     ) : (
                                                         <TableCell className="text-muted-foreground italic">

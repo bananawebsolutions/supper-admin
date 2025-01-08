@@ -8,7 +8,9 @@ export const POST = async () => {
         }
 
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-        const payments = await stripe.checkout.sessions.list();
+        const payments = await stripe.checkout.sessions.list({
+            status: "complete",
+        });
 
         return NextResponse.json(
             {
