@@ -83,7 +83,10 @@ function OrderDetails({
     return (
         <div className="flex justify-end">
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <DialogTrigger asChild className="text-muted text-sm">
+                <DialogTrigger
+                    asChild
+                    className="text-muted-foreground text-sm"
+                >
                     <Button
                         variant="outline"
                         className={`${isOpen ? "hidden" : "block"}`}

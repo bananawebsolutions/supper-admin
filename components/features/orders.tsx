@@ -22,8 +22,12 @@ import Stripe from "stripe";
 import FormattedPrice from "../formatted-price";
 import OrderDetails from "../order-details";
 import useShippingData from "@/hooks/useShippingData";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useState } from "react";
 
 export default function Orders() {
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const { data: payments, loading, error } = usePaymentsData();
     const {
         data: shipping,
@@ -38,16 +42,36 @@ export default function Orders() {
         return <p className="text-red-500">Error: {error || shippingError}</p>;
     }
 
+    const filteredPayments = selectedDate
+        ? payments.filter((payment: Stripe.Checkout.Session) => {
+              const paymentDate = new Date(payment.created * 1000); // Assuming payment.created is a Unix timestamp
+              return paymentDate.toDateString() === selectedDate.toDateString();
+          })
+        : payments;
+
     return (
         <Card>
             <CardHeader className="px-7">
-                <CardTitle>Pedidos</CardTitle>
-                <CardDescription>
-                    Pedidos recientes de la tienda en línea.
-                </CardDescription>
+                <div className="flex gap-2 items-center justify-between">
+                    <div className="flex flex-col gap-2">
+                        <CardTitle>Pedidos</CardTitle>
+                        <CardDescription>
+                            Pedidos recientes de la tienda en línea.
+                        </CardDescription>
+                    </div>
+                    <div>
+                        <DatePicker
+                            selected={selectedDate}
+                            dateFormat={"d/M/yyyy"}
+                            onChange={(date) => setSelectedDate(date)}
+                            placeholderText="Selecciona una fecha"
+                            className="border border-muted text-muted-foreground rounded-md px-3 py-1"
+                        />
+                    </div>
+                </div>
             </CardHeader>
             <CardContent>
-                {payments?.length > 0 ? (
+                {filteredPayments?.length > 0 ? (
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -76,7 +100,7 @@ export default function Orders() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {payments?.map(
+                            {filteredPayments.map(
                                 (payment: Stripe.Checkout.Session) => {
                                     const matchingShipping = shipping?.find(
                                         (item: Stripe.PaymentIntent) =>
