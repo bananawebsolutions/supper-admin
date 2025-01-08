@@ -25,9 +25,13 @@ import useShippingData from "@/hooks/useShippingData";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 export default function Orders() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const itemsPerPage = 10;
+
     const { data: payments, loading, error } = usePaymentsData();
     const {
         data: shipping,
@@ -48,6 +52,16 @@ export default function Orders() {
               return paymentDate.toDateString() === selectedDate.toDateString();
           })
         : payments;
+
+    const totalPages = Math.ceil(filteredPayments.length / itemsPerPage);
+    const paginatedPayments = filteredPayments.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
 
     return (
         <Card>
@@ -71,7 +85,7 @@ export default function Orders() {
                 </div>
             </CardHeader>
             <CardContent>
-                {filteredPayments?.length > 0 ? (
+                {paginatedPayments?.length > 0 ? (
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -100,7 +114,7 @@ export default function Orders() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {filteredPayments.map(
+                            {paginatedPayments.map(
                                 (payment: Stripe.Checkout.Session) => {
                                     const matchingShipping = shipping?.find(
                                         (item: Stripe.PaymentIntent) =>
@@ -223,6 +237,27 @@ export default function Orders() {
                 ) : (
                     <p className="text-sm pl-2">Aún no tienes pedidos.</p>
                 )}
+                <div className="flex items-center justify-between mt-4">
+                    <Button
+                        variant="outline"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 rounded disabled:opacity-50"
+                    >
+                        Anterior
+                    </Button>
+                    <span className="text-sm text-foreground">
+                        Página {currentPage} of {totalPages}
+                    </span>
+                    <Button
+                        variant="outline"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 rounded disabled:opacity-50"
+                    >
+                        Siguiente
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     );
