@@ -62,7 +62,7 @@ export default function Dashboard() {
         return <p className="text-red-500">Error: {error}</p>;
     }
     return (
-        <main className="">
+        <main>
             <div className="grid grid-cols-1 gap-4">
                 <Card>
                     <CardHeader>

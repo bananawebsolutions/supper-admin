@@ -10,7 +10,7 @@ const useSalesData = () => {
     useEffect(() => {
         const fetchStripeData = async () => {
             try {
-                const response = await fetch("/api/get-sales-dat", {
+                const response = await fetch("/api/get-sales-data", {
                     method: "POST",
                 });
                 const result = await response.json();
