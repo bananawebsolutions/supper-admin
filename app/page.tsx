@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
+import { DollarSign } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import {
     Card,
@@ -17,16 +17,7 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart";
 import useSalesData from "@/hooks/useSalesData";
-
-const chartData = [
-    { month: "Enero", ventas: 186 },
-    { month: "Febrero", ventas: 305 },
-    { month: "Marzo", ventas: 237 },
-    { month: "Abril", ventas: 73 },
-    { month: "Mayo", ventas: 209 },
-    { month: "Junio", ventas: 214 },
-    { month: "Julio", ventas: 300 },
-];
+import Stripe from "stripe";
 
 const chartConfig = {
     desktop: {
@@ -37,8 +28,32 @@ const chartConfig = {
 
 export default function Dashboard() {
     const { data: sales, loading, error } = useSalesData();
+    const thisYear = new Date().getFullYear();
 
-    console.log(sales);
+    const salesByMonth = Array.from({ length: 12 }, () => 0);
+
+    sales.forEach((sale: Stripe.PaymentIntent) => {
+        const saleDate = new Date(sale.created * 1000);
+        const saleMonth = saleDate.getMonth();
+        if (saleDate.getFullYear() === thisYear) {
+            salesByMonth[saleMonth] += sale.amount_received / 100;
+        }
+    });
+
+    const chartData = [
+        { month: "Enero", ventas: salesByMonth[0] },
+        { month: "Febrero", ventas: salesByMonth[1] },
+        { month: "Marzo", ventas: salesByMonth[2] },
+        { month: "Abril", ventas: salesByMonth[3] },
+        { month: "Mayo", ventas: salesByMonth[4] },
+        { month: "Junio", ventas: salesByMonth[5] },
+        { month: "Julio", ventas: salesByMonth[6] },
+        { month: "Agosto", ventas: salesByMonth[7] },
+        { month: "Septiembre", ventas: salesByMonth[8] },
+        { month: "Octubre", ventas: salesByMonth[9] },
+        { month: "Noviembre", ventas: salesByMonth[10] },
+        { month: "Diciembre", ventas: salesByMonth[11] },
+    ];
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -48,10 +63,13 @@ export default function Dashboard() {
     }
     return (
         <main className="">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Ventas Totales - Supper</CardTitle>
+                        <CardTitle className="flex items-center gap-2">
+                            <DollarSign className="text-foreground h-3" />
+                            Ventas Totales - Supper
+                        </CardTitle>
                         <CardDescription>
                             Ventas totales de cada mes
                         </CardDescription>
@@ -97,11 +115,10 @@ export default function Dashboard() {
                         <div className="flex w-full items-start gap-2 text-sm">
                             <div className="grid gap-2">
                                 <div className="flex items-center gap-2 font-medium leading-none">
-                                    Trending up by 5.2% this month{" "}
-                                    <TrendingUp className="h-4 w-4" />
+                                    Ventas Totales por Mes (Ene - Dic)
                                 </div>
                                 <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                                    Año 2024
+                                    Año<span>{thisYear}</span>
                                 </div>
                             </div>
                         </div>
