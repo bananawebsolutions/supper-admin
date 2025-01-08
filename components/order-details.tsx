@@ -110,12 +110,6 @@ function OrderDetails({
                         </Button>
                     </DialogHeader>
                     <Card className="mt-4 w-full">
-                        {/* <CardHeader className="px-7">
-                            Detalles de la orden
-                            <CardDescription>
-                                Detalles de la orden seleccionada
-                            </CardDescription>
-                        </CardHeader> */}
                         <CardContent>
                             {order?.items ? (
                                 <Table>
