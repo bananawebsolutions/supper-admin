@@ -16,6 +16,7 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
+import useSalesData from "@/hooks/useSalesData";
 
 const chartData = [
     { month: "Enero", ventas: 186 },
@@ -35,6 +36,16 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function Dashboard() {
+    const { data: sales, loading, error } = useSalesData();
+
+    console.log(sales);
+
+    if (loading) {
+        return <p>Cargando...</p>;
+    }
+    if (error || error) {
+        return <p className="text-red-500">Error: {error}</p>;
+    }
     return (
         <main className="">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
