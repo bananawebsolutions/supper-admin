@@ -145,8 +145,9 @@ function OrderDetails({
                                                         {item.title}
                                                     </TableCell>
                                                     <TableCell>
-                                                        {item.kgPrice ||
-                                                            item.pPrice}
+                                                        {item.kgPrice
+                                                            ? item.kgPrice
+                                                            : item.pPrice}
                                                     </TableCell>
                                                     {item?.quantity ? (
                                                         <TableCell>
