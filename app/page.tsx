@@ -64,7 +64,7 @@ export default function Dashboard() {
     return (
         <main>
             <div className="grid grid-cols-1 gap-4">
-                <Card>
+                <Card className="max-w-[800px]">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <DollarSign className="text-foreground h-3" />
@@ -75,7 +75,10 @@ export default function Dashboard() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <ChartContainer config={chartConfig}>
+                        <ChartContainer
+                            config={chartConfig}
+                            className="max-h-[400px]"
+                        >
                             <AreaChart
                                 accessibilityLayer
                                 data={chartData}
@@ -123,6 +126,11 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </CardFooter>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Totales de Ventas dia siguiente</CardTitle>
+                    </CardHeader>
                 </Card>
             </div>
         </main>
