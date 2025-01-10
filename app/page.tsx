@@ -19,7 +19,7 @@ import {
 import useSalesData from "@/hooks/useSalesData";
 import Stripe from "stripe";
 import { useOrdersData } from "@/hooks/useOrdersData";
-import { useMemo } from "react";
+// import { useMemo } from "react";
 
 const chartConfig = {
     desktop: {
@@ -31,14 +31,19 @@ const chartConfig = {
 export default function Dashboard() {
     const { data: sales, loading, error } = useSalesData();
 
-    const specificDate = useMemo(() => new Date("2024-11-26"), []);
+    // const specificDate = useMemo(() => new Date("2024-11-26"), []);
+
+    // const {
+    //     data: orders,
+    //     loading: loadingOrders,
+    //     error: errorOrders,
+    // } = useOrdersData(specificDate);
 
     const {
         data: orders,
         loading: loadingOrders,
         error: errorOrders,
-    } = useOrdersData(specificDate);
-
+    } = useOrdersData();
     console.log(orders);
 
     const thisYear = new Date().getFullYear();
