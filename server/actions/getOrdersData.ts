@@ -17,14 +17,32 @@ export const getOrdersData = async () => {
 
         const userDocs = await usersRef.get();
 
-        const users = userDocs.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
+        let orders: any[] = [];
 
-        console.log("users:", users);
+        for (const userDoc of userDocs.docs) {
+            const userEmail = userDoc.id;
+            console.log("user Email", userEmail);
 
-        return users;
+            const ordersRef = usersRef.doc(userEmail).collection("orders");
+            const orderDocs = await ordersRef.get();
+            console.log(
+                "Number of orders for user",
+                userEmail,
+                ":",
+                orderDocs.size
+            );
+
+            orderDocs.forEach((orderDoc) => {
+                const data = orderDoc.data();
+                console.log("Order Data:", data);
+                orders.push({
+                    id: orderDoc.id,
+                    ...data,
+                });
+            });
+        }
+
+        return orders;
 
         // const orders = orderDocs.docs.map((doc) => ({
         //     id: doc.id,
@@ -39,7 +57,7 @@ export const getOrdersData = async () => {
         //     };
         // });
     } catch (error) {
-        console.error("Error getting userInfo data:", error);
+        console.error("Error getting usersInfo data:", error);
         return null;
     }
 };
