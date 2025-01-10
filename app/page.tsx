@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/chart";
 import useSalesData from "@/hooks/useSalesData";
 import Stripe from "stripe";
+import { useOrdersData } from "@/hooks/useOrdersData";
+import { useMemo } from "react";
 
 const chartConfig = {
     desktop: {
@@ -28,6 +30,17 @@ const chartConfig = {
 
 export default function Dashboard() {
     const { data: sales, loading, error } = useSalesData();
+
+    const specificDate = useMemo(() => new Date("2024-11-26"), []);
+
+    const {
+        data: orders,
+        loading: loadingOrders,
+        error: errorOrders,
+    } = useOrdersData(specificDate);
+
+    console.log(orders);
+
     const thisYear = new Date().getFullYear();
 
     const salesByMonth = Array.from({ length: 12 }, () => 0);
@@ -55,10 +68,10 @@ export default function Dashboard() {
         { month: "Diciembre", ventas: salesByMonth[11] },
     ];
 
-    if (loading) {
+    if (loading || loadingOrders) {
         return <p>Cargando...</p>;
     }
-    if (error || error) {
+    if (error || errorOrders) {
         return <p className="text-red-500">Error: {error}</p>;
     }
     return (
@@ -67,7 +80,7 @@ export default function Dashboard() {
                 <Card className="max-w-[800px]">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <DollarSign className="text-foreground h-3" />
+                            <DollarSign className="text-foreground h-5" />
                             Ventas Totales - Supper
                         </CardTitle>
                         <CardDescription>
