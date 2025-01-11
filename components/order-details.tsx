@@ -26,6 +26,7 @@ interface Props {
     pickupLocation: string;
     shippingMethod: string;
     schedule: string;
+    printQuantities: boolean;
 }
 
 interface ProductData {
@@ -60,6 +61,7 @@ function OrderDetails({
     shippingMethod,
     pickupLocation,
     schedule,
+    printQuantities,
 }: Props) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -74,12 +76,9 @@ function OrderDetails({
     };
 
     const addOrUpdateOrder = useOrdersStore((state) => state.addOrUpdateOrder);
-    const totalOrders = useOrdersStore((state) => state.totalOrders);
-
-    console.log(totalOrders);
 
     useEffect(() => {
-        if (order?.items) {
+        if (order?.items && printQuantities) {
             order?.items.forEach((item) => {
                 addOrUpdateOrder({
                     product: item?.title,
@@ -90,7 +89,7 @@ function OrderDetails({
                 });
             });
         }
-    }, [order, addOrUpdateOrder]);
+    }, [order, addOrUpdateOrder, printQuantities]);
 
     if (loading && isOpen && !order) {
         return <div>Cargando...</div>;
@@ -99,18 +98,6 @@ function OrderDetails({
     if (error) {
         return <p className="text-red-500">Error: {error}</p>;
     }
-
-    // const totalOrders = [];
-
-    // const orderItems = order?.items?.map((item) => {
-    //     totalOrders.push({
-    //         product: item?.title,
-    //         quantity: item?.quantity || 0,
-    //         kgQuantity: item?.kgQuantity || 0,
-    //     });
-    // });
-
-    // console.log(totalOrders);
 
     return (
         <div className="flex justify-end">

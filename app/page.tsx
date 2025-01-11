@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/chart";
 import useSalesData from "@/hooks/useSalesData";
 import Stripe from "stripe";
+import { useOrdersStore } from "@/store/ordersStore";
 
 const chartConfig = {
     desktop: {
@@ -29,7 +30,7 @@ const chartConfig = {
 export default function Dashboard() {
     const { data: sales, loading, error } = useSalesData();
 
-    // const specificDate = useMemo(() => new Date("2024-11-26"), []);
+    const totalOrders = useOrdersStore((state) => state.totalOrders);
 
     const thisYear = new Date().getFullYear();
 
@@ -134,6 +135,57 @@ export default function Dashboard() {
                     <CardHeader>
                         <CardTitle>Totales de Ventas dia siguiente</CardTitle>
                     </CardHeader>
+                    {totalOrders.length > 0 ? (
+                        <>
+                            <CardContent>
+                                <ul>
+                                    {totalOrders.map((order, index) => (
+                                        <li key={index}>
+                                            {order.product}:{" "}
+                                            {order.quantity || 0} unidades,{" "}
+                                            {order.kgQuantity || 0} kg,{" "}
+                                            {order.matureKgQuantity || 0} kg
+                                            Maduro, {order.greenKgQuantity || 0}{" "}
+                                            kg Verde
+                                        </li>
+                                    ))}
+                                </ul>
+                            </CardContent>
+                            <CardFooter>
+                                <div className="flex w-full items-start gap-2 text-sm">
+                                    <div className="grid gap-2">
+                                        <div className="flex items-center gap-2 font-medium leading-none">
+                                            Total de Productos:{" "}
+                                            {totalOrders.length}
+                                        </div>
+                                        <div className="flex items-center gap-2 leading-none text-muted-foreground">
+                                            Total de Unidades:{" "}
+                                            {totalOrders.reduce(
+                                                (acc, order) =>
+                                                    acc + order.quantity,
+                                                0
+                                            )}
+                                        </div>
+                                        <div className="flex items-center gap-2 leading-none text-muted-foreground">
+                                            Total de Kg:{" "}
+                                            {totalOrders.reduce(
+                                                (acc, order) =>
+                                                    acc +
+                                                    order.kgQuantity +
+                                                    order.matureKgQuantity +
+                                                    order.greenKgQuantity,
+                                                0
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </CardFooter>
+                        </>
+                    ) : (
+                        <CardContent>
+                            <p>No se han impreso pedidos</p>
+                        </CardContent>
+                    )}
                 </Card>
             </div>
         </main>

@@ -28,6 +28,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 
 export default function Orders() {
+    const [printQuantities, setPrintQuantities] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 10;
@@ -73,7 +74,7 @@ export default function Orders() {
                             Pedidos recientes de la tienda en línea.
                         </CardDescription>
                     </div>
-                    <div>
+                    <div className="flex gap-2 items-center">
                         <DatePicker
                             selected={selectedDate}
                             dateFormat={"d/M/yyyy"}
@@ -81,6 +82,17 @@ export default function Orders() {
                             placeholderText="Selecciona una fecha"
                             className="border border-muted text-muted-foreground rounded-md px-3 py-1"
                         />
+                        <Button
+                            variant="outline"
+                            onClick={() => {
+                                setPrintQuantities((prev) => !prev);
+                            }}
+                            className="text-foreground"
+                        >
+                            {printQuantities
+                                ? "Reseteo de Cantidades"
+                                : "Imprimir Cantidades"}
+                        </Button>
                     </div>
                 </div>
             </CardHeader>
@@ -225,6 +237,9 @@ export default function Orders() {
                                                     schedule={
                                                         payment?.metadata
                                                             ?.schedule ?? ""
+                                                    }
+                                                    printQuantities={
+                                                        printQuantities
                                                     }
                                                 />
                                             </TableCell>
