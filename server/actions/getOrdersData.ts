@@ -11,38 +11,46 @@ export const getOrdersData = async () => {
 
         // const endOfDay = new Date(date);
         // endOfDay.setHours(23, 59, 59, 999);
-        const usersRef = adminDB.collection("usersInfo");
+
+        const usersRef = await adminDB
+            .collection("usersInfo")
+            .doc("fer.rojas95@gmail.com")
+            .collection("orders")
+            .doc(
+                "cs_test_a14pc53TstOzSPeGV2AwgDmLb49NG4mpmQ3Gm7ggRoEycDfDHdIG6RyQpW"
+            )
+            .get();
+
+        const result = {
+            id: usersRef.id,
+            value: usersRef.data()?.items,
+            ...usersRef.data(),
+        };
+        console.log(result.value);
         // .where("_createdAt", ">=", startOfDay.toISOString())
         // .where("_createdAt", "<=", endOfDay.toISOString());
 
-        const userDocs = await usersRef.get();
+        return ["prueba", "prueba2"];
 
-        let orders: any[] = [];
+        // console.log(userDocs.docs);
+        // let orders: any[] = [];
 
-        for (const userDoc of userDocs.docs) {
-            const userEmail = userDoc.id;
-            console.log("user Email", userEmail);
+        // for (const userDoc of userDocs.docs) {
+        //     const userEmail = userDoc.id;
 
-            const ordersRef = usersRef.doc(userEmail).collection("orders");
-            const orderDocs = await ordersRef.get();
-            console.log(
-                "Number of orders for user",
-                userEmail,
-                ":",
-                orderDocs.size
-            );
+        //     const ordersRef = usersRef.doc(userEmail).collection("orders");
+        //     const orderDocs = await ordersRef.get();
 
-            orderDocs.forEach((orderDoc) => {
-                const data = orderDoc.data();
-                console.log("Order Data:", data);
-                orders.push({
-                    id: orderDoc.id,
-                    ...data,
-                });
-            });
-        }
+        //     orderDocs.forEach((orderDoc) => {
+        //         const data = orderDoc.data();
+        //         orders.push({
+        //             id: orderDoc.id,
+        //             ...data,
+        //         });
+        //     });
+        // }
 
-        return orders;
+        // return orders;
 
         // const orders = orderDocs.docs.map((doc) => ({
         //     id: doc.id,
