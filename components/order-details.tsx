@@ -8,7 +8,7 @@ import {
     TableHeader,
     TableRow,
 } from "./ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Dialog,
     DialogDescription,
@@ -18,6 +18,7 @@ import {
 } from "./ui/dialog";
 import { DialogContent } from "@radix-ui/react-dialog";
 import { Button } from "./ui/button";
+import { useOrdersStore } from "@/store/ordersStore";
 
 interface Props {
     orderId: string;
@@ -72,13 +73,44 @@ function OrderDetails({
         loading: boolean;
     };
 
-    if (loading && isOpen) {
+    const addOrUpdateOrder = useOrdersStore((state) => state.addOrUpdateOrder);
+    const totalOrders = useOrdersStore((state) => state.totalOrders);
+
+    console.log(totalOrders);
+
+    useEffect(() => {
+        if (order?.items) {
+            order?.items.forEach((item) => {
+                addOrUpdateOrder({
+                    product: item?.title,
+                    quantity: item?.quantity || 0,
+                    kgQuantity: item?.kgQuantity || 0,
+                    matureKgQuantity: item?.matureQuantity || 0,
+                    greenKgQuantity: item?.greenQuantity || 0,
+                });
+            });
+        }
+    }, [order, addOrUpdateOrder]);
+
+    if (loading && isOpen && !order) {
         return <div>Cargando...</div>;
     }
 
     if (error) {
         return <p className="text-red-500">Error: {error}</p>;
     }
+
+    // const totalOrders = [];
+
+    // const orderItems = order?.items?.map((item) => {
+    //     totalOrders.push({
+    //         product: item?.title,
+    //         quantity: item?.quantity || 0,
+    //         kgQuantity: item?.kgQuantity || 0,
+    //     });
+    // });
+
+    // console.log(totalOrders);
 
     return (
         <div className="flex justify-end">
