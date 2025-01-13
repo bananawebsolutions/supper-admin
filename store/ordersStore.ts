@@ -10,7 +10,10 @@ interface OrderItem {
 
 interface OrdersState {
     totalOrders: OrderItem[];
+    printQuantities: boolean;
     addOrUpdateOrder: (item: OrderItem) => void;
+    setPrintQuantities: (value: boolean) => void;
+    resetOrders: () => void;
 }
 
 export const useOrdersStore = create<OrdersState>((set) => ({
@@ -39,4 +42,7 @@ export const useOrdersStore = create<OrdersState>((set) => ({
                 return { totalOrders: [...state.totalOrders, item] };
             }
         }),
+    printQuantities: false,
+    setPrintQuantities: (value) => set({ printQuantities: value }),
+    resetOrders: () => set({ totalOrders: [] }),
 }));

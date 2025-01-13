@@ -91,7 +91,7 @@ function OrderDetails({
         }
     }, [order, addOrUpdateOrder, printQuantities]);
 
-    if (loading && isOpen && !order) {
+    if (loading && isOpen) {
         return <div>Cargando...</div>;
     }
 

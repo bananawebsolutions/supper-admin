@@ -19,6 +19,14 @@ import {
 import useSalesData from "@/hooks/useSalesData";
 import Stripe from "stripe";
 import { useOrdersStore } from "@/store/ordersStore";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 
 const chartConfig = {
     desktop: {
@@ -136,21 +144,39 @@ export default function Dashboard() {
                         <CardTitle>Totales de Ventas dia siguiente</CardTitle>
                     </CardHeader>
                     {totalOrders.length > 0 ? (
-                        <>
-                            <CardContent>
-                                <ul>
+                        <CardContent>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Producto</TableHead>
+                                        <TableHead>Unidades</TableHead>
+                                        <TableHead>Kg</TableHead>
+                                        <TableHead>Kg Maduro</TableHead>
+                                        <TableHead>Kg Verde</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
                                     {totalOrders.map((order, index) => (
-                                        <li key={index}>
-                                            {order.product}:{" "}
-                                            {order.quantity || 0} unidades,{" "}
-                                            {order.kgQuantity || 0} kg,{" "}
-                                            {order.matureKgQuantity || 0} kg
-                                            Maduro, {order.greenKgQuantity || 0}{" "}
-                                            kg Verde
-                                        </li>
+                                        <TableRow key={index}>
+                                            <TableCell>
+                                                {order.product}
+                                            </TableCell>
+                                            <TableCell>
+                                                {order.quantity || 0}
+                                            </TableCell>
+                                            <TableCell>
+                                                {order.kgQuantity || 0}
+                                            </TableCell>
+                                            <TableCell>
+                                                {order.matureKgQuantity || 0}
+                                            </TableCell>
+                                            <TableCell>
+                                                {order.greenKgQuantity || 0}
+                                            </TableCell>
+                                        </TableRow>
                                     ))}
-                                </ul>
-                            </CardContent>
+                                </TableBody>
+                            </Table>
                             <CardFooter>
                                 <div className="flex w-full items-start gap-2 text-sm">
                                     <div className="grid gap-2">
@@ -180,7 +206,7 @@ export default function Dashboard() {
                                     </div>
                                 </div>
                             </CardFooter>
-                        </>
+                        </CardContent>
                     ) : (
                         <CardContent>
                             <p>No se han impreso pedidos</p>

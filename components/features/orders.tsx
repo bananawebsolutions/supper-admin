@@ -26,12 +26,18 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { useOrdersStore } from "@/store/ordersStore";
 
 export default function Orders() {
-    const [printQuantities, setPrintQuantities] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 10;
+
+    const printQuantities = useOrdersStore((state) => state.printQuantities);
+    const resetOrders = useOrdersStore((state) => state.resetOrders);
+    const setPrintQuantities = useOrdersStore(
+        (state) => state.setPrintQuantities
+    );
 
     const { data: payments, loading, error } = usePaymentsData();
     const {
@@ -83,15 +89,23 @@ export default function Orders() {
                             className="border border-muted text-muted-foreground rounded-md px-3 py-1"
                         />
                         <Button
-                            variant="outline"
                             onClick={() => {
-                                setPrintQuantities((prev) => !prev);
+                                setPrintQuantities(true);
                             }}
-                            className="text-foreground"
+                            variant="outline"
+                            disabled={printQuantities}
                         >
-                            {printQuantities
-                                ? "Reseteo de Cantidades"
-                                : "Imprimir Cantidades"}
+                            Imprimir Cantidades
+                        </Button>
+                        <Button
+                            variant="outline"
+                            disabled={!printQuantities}
+                            onClick={() => {
+                                resetOrders();
+                                setPrintQuantities(false);
+                            }}
+                        >
+                            Resetear Cantidades
                         </Button>
                     </div>
                 </div>
