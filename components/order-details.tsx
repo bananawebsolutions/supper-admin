@@ -8,7 +8,7 @@ import {
     TableHeader,
     TableRow,
 } from "./ui/table";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Dialog,
     DialogDescription,
@@ -18,7 +18,7 @@ import {
 } from "./ui/dialog";
 import { DialogContent } from "@radix-ui/react-dialog";
 import { Button } from "./ui/button";
-import { useOrdersStore } from "@/store/ordersStore";
+import { useProcessPrintOrder } from "@/hooks/useProcessPrintOrder";
 
 interface Props {
     orderId: string;
@@ -29,7 +29,7 @@ interface Props {
     printQuantities: boolean;
 }
 
-interface ProductData {
+export interface ProductData {
     _createdAt: string;
     _rev: string;
     _id: string;
@@ -43,13 +43,13 @@ interface ProductData {
     image: { _type: string; asset: { _ref: string; _type: string } };
     productCategory: string;
     productType: string;
-    quantity: number;
+    quantity?: number;
     matureQuantity?: number;
     greenQuantity?: number;
     slug: { current: string; _type: string };
 }
 
-interface OrderData {
+export interface OrderData {
     items: ProductData[];
     amount: number;
     shipping: number;
@@ -75,21 +75,7 @@ function OrderDetails({
         loading: boolean;
     };
 
-    const addOrUpdateOrder = useOrdersStore((state) => state.addOrUpdateOrder);
-
-    useEffect(() => {
-        if (order?.items && printQuantities) {
-            order?.items.forEach((item) => {
-                addOrUpdateOrder({
-                    product: item?.title,
-                    quantity: item?.quantity || 0,
-                    kgQuantity: item?.kgQuantity || 0,
-                    matureKgQuantity: item?.matureQuantity || 0,
-                    greenKgQuantity: item?.greenQuantity || 0,
-                });
-            });
-        }
-    }, [order, addOrUpdateOrder, printQuantities]);
+    useProcessPrintOrder(order, printQuantities);
 
     if (loading && isOpen) {
         return <div>Cargando...</div>;
