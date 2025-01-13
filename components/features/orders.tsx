@@ -38,6 +38,7 @@ export default function Orders() {
     const setPrintQuantities = useOrdersStore(
         (state) => state.setPrintQuantities
     );
+    const setPrintProcess = useOrdersStore((state) => state.setPrintProcess);
 
     const { data: payments, loading, error } = usePaymentsData();
     const {
@@ -103,6 +104,7 @@ export default function Orders() {
                             onClick={() => {
                                 resetOrders();
                                 setPrintQuantities(false);
+                                setPrintProcess(false);
                             }}
                         >
                             Resetear Cantidades

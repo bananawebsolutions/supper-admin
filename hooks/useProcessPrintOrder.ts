@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useOrdersStore } from "@/store/ordersStore";
 import { OrderData } from "@/components/order-details";
 
@@ -7,10 +7,11 @@ export const useProcessPrintOrder = (
     printQuantities: boolean
 ) => {
     const addOrUpdateOrder = useOrdersStore((state) => state.addOrUpdateOrder);
-    const hasProcessedOrder = useRef<boolean>(false);
+    const printProcess = useOrdersStore((state) => state.printProcess);
+    const setPrintProcess = useOrdersStore((state) => state.setPrintProcess);
 
     useEffect(() => {
-        if (order?.items && printQuantities && !hasProcessedOrder.current) {
+        if (!printProcess && order?.items && printQuantities) {
             order.items.forEach((item) => {
                 addOrUpdateOrder({
                     product: item.title,
@@ -20,7 +21,13 @@ export const useProcessPrintOrder = (
                     greenKgQuantity: item.greenQuantity || 0,
                 });
             });
-            hasProcessedOrder.current = true;
+            setPrintProcess(true);
         }
-    }, [order, addOrUpdateOrder, printQuantities]);
+    }, [
+        order,
+        addOrUpdateOrder,
+        printQuantities,
+        setPrintProcess,
+        printProcess,
+    ]);
 };

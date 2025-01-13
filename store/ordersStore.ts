@@ -14,6 +14,8 @@ interface OrdersState {
     addOrUpdateOrder: (item: OrderItem) => void;
     setPrintQuantities: (value: boolean) => void;
     resetOrders: () => void;
+    printProcess: boolean;
+    setPrintProcess: (value: boolean) => void;
 }
 
 export const useOrdersStore = create<OrdersState>((set) => ({
@@ -45,4 +47,6 @@ export const useOrdersStore = create<OrdersState>((set) => ({
     printQuantities: false,
     setPrintQuantities: (value) => set({ printQuantities: value }),
     resetOrders: () => set({ totalOrders: [] }),
+    printProcess: false,
+    setPrintProcess: (value) => set({ printProcess: value }),
 }));
