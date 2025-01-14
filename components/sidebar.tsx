@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {
-    BoxIcon,
+    // BoxIcon,
     // Bell,
     // CircleUser,
     Home,
@@ -37,7 +37,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                             className="flex items-center gap-2 font-semibold text-lg"
                         >
                             <span>
-                                <BoxIcon />
+                                <ShoppingCart />
                             </span>
                             Supper
                         </Link>
@@ -79,7 +79,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                                     className="flex items-center gap-2 text-lg font-semibold"
                                 >
                                     <span>
-                                        <BoxIcon />
+                                        <ShoppingCart />
                                     </span>
                                     Supper
                                 </Link>
