@@ -77,8 +77,14 @@ function OrderDetails({
 
     useProcessPrintOrder(order, printQuantities);
 
-    if (loading && isOpen) {
-        return <p>Cargando...</p>;
+    if (loading) {
+        return (
+            <div className="fixed top-[82px] left-0 md:left-[222px] lg:left-[282px] right-0 bottom-0 bg-white z-[99]">
+                <div className="flex justify-center flex-col items-center w-full h-full">
+                    <p>Cargando...</p>
+                </div>
+            </div>
+        );
     }
 
     if (error) {
