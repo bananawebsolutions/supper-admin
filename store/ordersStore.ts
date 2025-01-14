@@ -16,6 +16,8 @@ interface OrdersState {
     resetOrders: () => void;
     printProcess: boolean;
     setPrintProcess: (value: boolean) => void;
+    loadingProcess: boolean;
+    setLoadingProcess: (value: boolean) => void;
 }
 
 export const useOrdersStore = create<OrdersState>((set) => ({
@@ -49,4 +51,6 @@ export const useOrdersStore = create<OrdersState>((set) => ({
     resetOrders: () => set({ totalOrders: [] }),
     printProcess: false,
     setPrintProcess: (value) => set({ printProcess: value }),
+    loadingProcess: false,
+    setLoadingProcess: (value) => set({ loadingProcess: value }),
 }));

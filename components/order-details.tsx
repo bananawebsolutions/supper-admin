@@ -78,7 +78,7 @@ function OrderDetails({
     useProcessPrintOrder(order, printQuantities);
 
     if (loading && isOpen) {
-        return <div>Cargando...</div>;
+        return <p>Cargando...</p>;
     }
 
     if (error) {
