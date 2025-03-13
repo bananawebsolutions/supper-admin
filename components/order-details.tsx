@@ -23,9 +23,6 @@ import { useProcessPrintOrder } from "@/hooks/useProcessPrintOrder";
 interface Props {
     orderId: string;
     email: string;
-    pickupLocation: string;
-    shippingMethod: string;
-    schedule: string;
     printQuantities: boolean;
 }
 
@@ -55,14 +52,7 @@ export interface OrderData {
     shipping: number;
 }
 
-function OrderDetails({
-    orderId,
-    email,
-    shippingMethod,
-    pickupLocation,
-    schedule,
-    printQuantities,
-}: Props) {
+function OrderDetails({ orderId, email, printQuantities }: Props) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const {
@@ -134,12 +124,6 @@ function OrderDetails({
                                             <TableHead>Kg Maduro</TableHead>
                                             <TableHead>Kg Verde</TableHead>
                                             <TableHead>Kg</TableHead>
-                                            <TableHead>
-                                                Lugar recolección pickup
-                                            </TableHead>
-                                            <TableHead>
-                                                Horario de entrega
-                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -186,26 +170,6 @@ function OrderDetails({
                                                     {item?.kgQuantity ? (
                                                         <TableCell className="text-muted-foreground italic">
                                                             {item.kgQuantity}
-                                                        </TableCell>
-                                                    ) : (
-                                                        <TableCell className="text-muted-foreground italic">
-                                                            -
-                                                        </TableCell>
-                                                    )}
-                                                    {shippingMethod ===
-                                                    "pickup" ? (
-                                                        <TableCell>
-                                                            {pickupLocation}
-                                                        </TableCell>
-                                                    ) : (
-                                                        <TableCell className="text-muted-foreground italic">
-                                                            -
-                                                        </TableCell>
-                                                    )}
-                                                    {shippingMethod ===
-                                                    "domicilio" ? (
-                                                        <TableCell>
-                                                            {schedule}
                                                         </TableCell>
                                                     ) : (
                                                         <TableCell className="text-muted-foreground italic">

@@ -134,7 +134,13 @@ export default function Orders() {
                                     Id Pedido
                                 </TableHead>
                                 <TableHead className="text-center">
-                                    Dirección
+                                    Dirección Cliente
+                                </TableHead>
+                                <TableHead className="text-center">
+                                    Lugar de Recolección
+                                </TableHead>
+                                <TableHead className="text-center">
+                                    Horario de Entrega
                                 </TableHead>
                                 <TableHead className="text-right">
                                     Detalles del Pedido
@@ -234,26 +240,44 @@ export default function Orders() {
                                                 )}
                                             </TableCell>
                                             <TableCell>
+                                                {payment.metadata
+                                                    ?.pickupLocation &&
+                                                payment.metadata
+                                                    ?.shippingMethod ===
+                                                    "pickup" ? (
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {
+                                                            payment.metadata
+                                                                ?.pickupLocation
+                                                        }
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-sm text-muted-foreground italic">
+                                                        -
+                                                    </p>
+                                                )}
+                                            </TableCell>
+                                            <TableCell>
+                                                {payment.metadata?.schedule ? (
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {
+                                                            payment.metadata
+                                                                ?.schedule
+                                                        }
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-sm text-muted-foreground italic">
+                                                        -
+                                                    </p>
+                                                )}
+                                            </TableCell>
+                                            <TableCell>
                                                 <OrderDetails
                                                     email={
                                                         payment?.metadata
                                                             ?.email ?? ""
                                                     }
                                                     orderId={payment?.id}
-                                                    shippingMethod={
-                                                        payment?.metadata
-                                                            ?.shippingMethod ??
-                                                        ""
-                                                    }
-                                                    pickupLocation={
-                                                        payment?.metadata
-                                                            ?.pickupLocation ??
-                                                        ""
-                                                    }
-                                                    schedule={
-                                                        payment?.metadata
-                                                            ?.schedule ?? ""
-                                                    }
                                                     printQuantities={
                                                         printQuantities
                                                     }
