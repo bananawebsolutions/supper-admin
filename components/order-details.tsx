@@ -19,6 +19,7 @@ import {
 import { DialogContent } from "@radix-ui/react-dialog";
 import { Button } from "./ui/button";
 import { useProcessPrintOrder } from "@/hooks/useProcessPrintOrder";
+import { Loader2 } from "lucide-react";
 
 interface Props {
     orderId: string;
@@ -69,9 +70,9 @@ function OrderDetails({ orderId, email, printQuantities }: Props) {
 
     if (loading) {
         return (
-            <div className="fixed top-[82px] left-0 md:left-[222px] lg:left-[282px] right-0 bottom-0 bg-white z-[99]">
+            <div className="fixed top-[82px] left-0 md:left-[222px] lg:left-[282px] right-0 bottom-0 bg-background z-[99]">
                 <div className="flex justify-center flex-col items-center w-full h-full">
-                    <p>Cargando...</p>
+                    <Loader2 className="animate-spin" />
                 </div>
             </div>
         );
