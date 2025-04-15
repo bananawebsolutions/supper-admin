@@ -96,9 +96,9 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                                 >
                                     <ShoppingCart className="h-5 w-5" />
                                     Pedidos
-                                    <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                                    {/* <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                                         6
-                                    </Badge>
+                                    </Badge> */}
                                 </Link>
                                 {/* <Link
                                     href="#"
